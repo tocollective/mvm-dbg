@@ -461,7 +461,7 @@ static void execute_one(debugger *d) {
 int main(int argc, char **argv) {
   size_t port = 0;
   if (argc < 4 || !number(argv[1], &port) || !port || port > 65535 || strlen(argv[2]) != 64) {
-    fputs("usage: mvm-debug <loopback-port> <token> <program.mvm> [arguments...]\n", stderr); return 1;
+    fputs("usage: mvm-dbg <loopback-port> <token> <program.mvm> [arguments...]\n", stderr); return 1;
   }
 #ifdef _WIN32
   WSADATA data;

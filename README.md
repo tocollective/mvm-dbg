@@ -15,16 +15,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-# mvm-debug
+# mvm-dbg
 
 Native debugger for the mvm virtual machine. It runs an M program inside the VM
 and exposes execution control to the [M Language VS Code extension](../mvm-vscode-plugin/README.md).
-The extension provides the Debug Adapter Protocol (DAP) interface; `mvm-debug`
+The extension provides the Debug Adapter Protocol (DAP) interface; `mvm-dbg`
 communicates with it through a separate loopback TCP connection.
 
 ## Build
 
-Keep `mvm-debug/`, `mvm/`, `mvm-c/`, and `mvm-fmt/` beside each other in the common
+Keep `mvm-dbg/`, `mvm/`, `mvm-c/`, and `mvm-fmt/` beside each other in the common
 M directory. The debugger is built through the mvm CMake project and uses its
 runtime sources and bundled ZIP and TOML libraries.
 
@@ -35,11 +35,11 @@ Run from the common M directory:
 
 ```sh
 cmake -S mvm -B mvm/build -DCMAKE_BUILD_TYPE=Debug
-cmake --build mvm/build --target mvm-c mvm-debug --config Debug
+cmake --build mvm/build --target mvm-c mvm-dbg --config Debug
 ```
 
-The debugger executable is written to `mvm-debug/bin/mvm-debug`
-(`mvm-debug/bin/mvm-debug.exe` on Windows), including with multi-configuration
+The debugger executable is written to `mvm-dbg/bin/mvm-dbg`
+(`mvm-dbg/bin/mvm-dbg.exe` on Windows), including with multi-configuration
 generators. Intermediate files remain in `mvm/build/`. The compiler is written
 to `mvm-c/bin/mvm-c`.
 
@@ -53,7 +53,7 @@ mvm-c/bin/mvm-c --debug -I mvm-lib mvm-c/examples/hello.m -o mvm/build/hello.mvm
 ```
 
 Install the M Language extension, open the common M directory, and press F5
-with an M source file open. The extension finds `mvm-debug/bin/mvm-debug`
+with an M source file open. The extension finds `mvm-dbg/bin/mvm-dbg`
 automatically and compiles source files with debug information before launch.
 It can also launch an existing `.mvm` image.
 
@@ -62,7 +62,7 @@ For a separate workspace, set the executable paths in `.vscode/settings.json`:
 ```json
 {
   "m.compilerPath": "/path/to/M/mvm-c/bin/mvm-c",
-  "m.debuggerPath": "/path/to/M/mvm-debug/bin/mvm-debug",
+  "m.debuggerPath": "/path/to/M/mvm-dbg/bin/mvm-dbg",
   "m.includePaths": ["/path/to/M/mvm-lib"]
 }
 ```
@@ -77,7 +77,7 @@ debug metadata is available; otherwise values use `slot[n]` and `global[n]` name
 The executable is intended to be started by a debug adapter:
 
 ```text
-mvm-debug <loopback-port> <token> <program.mvm> [arguments...]
+mvm-dbg <loopback-port> <token> <program.mvm> [arguments...]
 ```
 
 The adapter listens on `127.0.0.1`, selects a port, and supplies a 64-character
@@ -111,7 +111,7 @@ Run the extension's integration suite against the built tools (requires Node.js,
 npm, and local TCP sockets):
 
 ```sh
-cmake --build mvm/build --target mvm-c mvm-debug mvm-fmt --config Debug
+cmake --build mvm/build --target mvm-c mvm-dbg mvm-fmt --config Debug
 cd mvm-vscode-plugin
 npm ci
 npm run test:integration

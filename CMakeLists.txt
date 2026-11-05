@@ -20,20 +20,20 @@ set(DEBUG_RUNTIME_SOURCES)
 foreach(runtime_source IN LISTS MVM_RUNTIME_SOURCES)
     list(APPEND DEBUG_RUNTIME_SOURCES "${MVM_SOURCE_DIR}/${runtime_source}")
 endforeach()
-add_executable(mvm-debug source/debugger.c ${DEBUG_RUNTIME_SOURCES})
-target_include_directories(mvm-debug PRIVATE
+add_executable(mvm-dbg source/debugger.c ${DEBUG_RUNTIME_SOURCES})
+target_include_directories(mvm-dbg PRIVATE
     "${MVM_SOURCE_DIR}/include" "${MVM_SOURCE_DIR}/source")
-target_link_libraries(mvm-debug PRIVATE PkgConfig::LIBFFI ${CMAKE_DL_LIBS}
+target_link_libraries(mvm-dbg PRIVATE PkgConfig::LIBFFI ${CMAKE_DL_LIBS}
     Threads::Threads ${MVM_SYSTEM_LIBRARIES} mvm_zip mvm_toml)
-set_target_properties(mvm-debug PROPERTIES
+set_target_properties(mvm-dbg PROPERTIES
     C_STANDARD 11 C_STANDARD_REQUIRED YES C_EXTENSIONS NO
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin/$<0:>")
 if(MSVC)
-    target_compile_options(mvm-debug PRIVATE /W4)
+    target_compile_options(mvm-dbg PRIVATE /W4)
 else()
-    target_compile_options(mvm-debug PRIVATE -Wall -Wextra)
-    target_link_libraries(mvm-debug PRIVATE m)
+    target_compile_options(mvm-dbg PRIVATE -Wall -Wextra)
+    target_link_libraries(mvm-dbg PRIVATE m)
 endif()
 if(WIN32)
-    target_link_libraries(mvm-debug PRIVATE ws2_32)
+    target_link_libraries(mvm-dbg PRIVATE ws2_32)
 endif()
